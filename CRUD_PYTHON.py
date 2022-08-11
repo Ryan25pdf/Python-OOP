@@ -1,6 +1,7 @@
 #Aplikasi CRUD OOP PYTHON
 # SOAL UJIAN No.6
 
+
 import mysql.connector as mysql
 import os
 
@@ -10,13 +11,13 @@ class Connection:
             host="localhost",
             user="root",
             database="uas_oop_7101210015_aryannarendra",
-            passwd="9900"
+            password="9900"
         )
         self.cursor = self.con.cursor()
         if self.con.is_connected():
-            print("berhasil connect")
+            print("berhasil terhubung")
         else:
-            print("gagal connect")
+            print("gagal terhubung")
 
 class pegawai(Connection):
     def __init__(self):
@@ -42,7 +43,7 @@ class pegawai(Connection):
             self.con.commit()
             print(cursor.rowcount, "data berhasil disimpan")
         except Exception as e:
-            print(e, "Error : Tidak ada database yang tersedia")
+            print(e,"Error : Tidak ada database yang tersedia")
 
     def read(self):
         query = f"SELECT * FROM `{self.tablename}`"
@@ -52,20 +53,20 @@ class pegawai(Connection):
             for data in result:
                 print(data)
         except Exception as e:
-            print(e, "Error : Table belum dibuat")
+            print(e, "data tidak tersedia")
 
     def update(self):
         nama_lama = input("masukkan nama pegawai : ")
-        nama = input("update nama baru : ")
-        alamat = input("update alamat baru : ")
-        no_hp = input("update no_hp baru : ")
+        nama = input("update nama : ")
+        alamat = input("update alamat : ")
+        no_hp = input("update no_hp : ")
         quary = f"UPDATE `{self.tablename}` set `nama` = '{nama}', `alamat` = '{alamat}', `no_hp` = '{no_hp}' WHERE `nama` = '{nama_lama}'"
         try:
             self.cursor.execute(quary)
             self.con.commit()
             print('UPDATE PEGAWAI ' + nama + ' BERHASIL')
         except Exception as e:
-            print(e, "Error : Tabel belum dibuat")
+            print(e, "Error : data tidak tersedia")
 
     def delete(self):
         nama = input("masukkan nama pegawai : ")
@@ -73,11 +74,11 @@ class pegawai(Connection):
         try:
             self.cursor.execute(quary)
             self.con.commit()
-            print('Data Pegawai berhasil dihapus')
+            print('Data berhasil dihapus')
         except Exception as e:
-            print(e, "Error : data pegawai tidak ada")
+            print(e, "Error : data tidak tersedia")
 
-class driver(Connection):
+class pengemudi(Connection):
     def __init__(self):
         super().__init__()
         self.tablename = "Driver"
@@ -93,7 +94,7 @@ class driver(Connection):
         no_hp = input("masukan no_hp: ")
         jenis_sim = input("masukan jenis_sim: ")
         no_sim = input("masukan no_sim: ")
-        berlaku_sim = input("masukan berlaku_sim: ")
+        berlaku_sim = input("masukan masa berlaku_sim: ")
         
         cursor = self.con.cursor()
         val = (no_ktp, nama, alamat, no_hp, jenis_sim, no_sim, berlaku_sim)
@@ -104,7 +105,7 @@ class driver(Connection):
             self.con.commit()
             print(cursor.rowcount, "data berhasil disimpan")
         except Exception as e:
-            print(e, "Error : Database belum dibuat")
+            print(e, "Error : Database tidak tersedia")
 
     def read(self):
         query = f"SELECT * FROM `{self.tablename}`"
@@ -114,14 +115,14 @@ class driver(Connection):
             for data in result:
                 print(data)
         except Exception as e:
-            print(e, "Error : data tidak tersedia")
+            print(e, "data tidak tersedia")
 
     def update(self):
-        nama_lama = input("masukkan nama driver lama : ")
-        no_ktp = input("masukan no_ktp baru: ")
-        nama = input("masukan nama baru : ")
-        alamat = input("masukan alamat baru : ")
-        no_hp = input("masukan no_hp baru : ")
+        nama_lama = input("masukkan nama driver : ")
+        no_ktp = input("masukan no_ktp: ")
+        nama = input("masukan nama: ")
+        alamat = input("masukan alamat: ")
+        no_hp = input("masukan no_hp: ")
         jenis_sim = input("masukan jenis_sim: ")
         berlaku_sim = input("masukan berlaku_sim: ")
         quary = f"UPDATE `{self.tablename}` set `no_ktp` = '{no_ktp}', `nama` = '{nama}', `alamat` = '{alamat}', `no_hp` = '{no_hp}', `jenis_sim` = '{jenis_sim}', `berlaku_sim` = '{berlaku_sim}' WHERE `nama` = '{nama_lama}'"
@@ -130,7 +131,7 @@ class driver(Connection):
             self.con.commit()
             print('UPDATE DRIVER ' + nama + ' BERHASIL')
         except Exception as e:
-            print(e, "Error : tabel masih kosong")
+            print(e, "Error : data tidak tersedia")
 
     def delete(self):
         nama = input("masukkan nama driver : ")
@@ -140,7 +141,7 @@ class driver(Connection):
             self.con.commit()
             print('Data berhasil dihapus')
         except Exception as e:
-            print(e, "Data tidak ada")
+            print(e, "Data tidak tersedia")
 
 
 class mobil(Connection):
@@ -148,7 +149,7 @@ class mobil(Connection):
         super().__init__()
         self.tablename = "Mobil"
         query = ("CREATE TABLE IF NOT EXISTS " + self.tablename +
-                "(id INT(10) NOT NULL AUTO_INCREMENT, nama_mobil VARCHAR(50), jenis_mobil VARCHAR(50), warna VARCHAR(50), tahun VARCHAR(20), stnk_atas_nama VARCHAR(50), no_rangka VARCHAR(50), no_mesin VARCHAR(50), no_polisi VARCHAR(50), status_pajak VARCHAR(20), berlaku_stnk DATE, harga_sewa INT(10), status VARCHAR(50))")
+                "(id INT(10) NOT NULL AUTO_INCREMENT PRIMARY KEY, nama_mobil VARCHAR(50), jenis_mobil VARCHAR(50), warna VARCHAR(50), tahun VARCHAR(20), stnk_atas_nama VARCHAR(50), no_rangka VARCHAR(50), no_mesin VARCHAR(50), no_polisi VARCHAR(50), status_pajak VARCHAR(20), berlaku_stnk DATE, harga_sewa INT(10), status VARCHAR(50))")
         self.cursor.execute(query)
 
     def create(self):
@@ -175,7 +176,7 @@ class mobil(Connection):
             self.con.commit()
             print(cursor.rowcount, "data berhasil disimpan")
         except Exception as e:
-            print(e, "Error : database tidak ada")
+            print(e, "Error : Database tidak tersedia")
 
     def read(self):
         query = f"SELECT * FROM `{self.tablename}`"
@@ -185,7 +186,7 @@ class mobil(Connection):
             for data in result:
                 print(data)
         except Exception as e:
-            print(e, "Error : tabel tidak ada")
+            print(e, "data tidak tersedia")
 
     def update(self):
         nama_mobil_lama = input("masukkan nama_mobil : ")
@@ -207,7 +208,7 @@ class mobil(Connection):
             self.con.commit()
             print('UPDATE MOBIL ' + nama_mobil + ' BERHASIL')
         except Exception as e:
-            print(e, "Update gagal")
+            print(e, "Error : data tidak tersedia")
 
     def delete(self):
         nama_mobil = input("masukkan nama_mobil : ")
@@ -217,7 +218,7 @@ class mobil(Connection):
             self.con.commit()
             print('Data berhasil dihapus')
         except Exception as e:
-            print(e, "Data tidak ada")
+            print(e, "data tidak tersedia")
 
 class konsumen(Connection):
     def __init__(self):
@@ -247,7 +248,7 @@ class konsumen(Connection):
             self.con.commit()
             print(cursor.rowcount, "data berhasil disimpan")
         except Exception as e:
-            print(e, "Database belum dibuat")
+            print(e, "Error : databases tidak tersedia")
 
     def read(self):
         query = f"SELECT * FROM `{self.tablename}`"
@@ -257,7 +258,7 @@ class konsumen(Connection):
             for data in result:
                 print(data)
         except Exception as e:
-            print(e, "Data tidak tersedia")
+            print(e, "data tidak tersedia")
 
     def update(self):
         nama_lama = input("masukkan nama konsumen : ")
@@ -273,7 +274,7 @@ class konsumen(Connection):
             self.con.commit()
             print('UPDATE KONSUMEN ' + nama + ' BERHASIL')
         except Exception as e:
-            print(e, "Update gagal")
+            print(e, "data tidak ada")
 
     def delete(self):
         nama = input("masukkan nama konsumen : ")
@@ -283,10 +284,10 @@ class konsumen(Connection):
             self.con.commit()
             print('Data berhasil dihapus')
         except Exception as e:
-            print(e, "data tidak ada")
+            print(e, "data tidak tersedia")
 
 def menu():
-    print("\n**====APLIKASI CRUD====**")
+    print("\n_____APLIKASI CRUD_____")
     print("silahkan pilih menu crud dibawah ini: ")
     print("1. CRUD PEGAWAI")
     print("2. CRUD DRIVER")
@@ -295,13 +296,13 @@ def menu():
     print("0. EXIT")
 
     def menu_aplikasi():
-        print(f"\n**====APLIKASI CRUD {db.tablename}====**")
+        print(f"\n_____APLIKASI CRUD {db.tablename}_____")
         print("silahkan pilih menu dibawah ini: ")
         print("1. CREATE DATA")
         print("2. READ DATA")
         print("3. UPDATE DATA")
         print("4. DELETE DATA")
-        print("5. KEMBALI KE MENU UTAMA")
+        print("5. KEMBALI KE MENU CRUD")
         print("0. EXIT")
 
         inmenu = input("Pilih menu> ")
@@ -325,9 +326,9 @@ def menu():
             else:
                 print("selamat datang kembali di: ")
         else:
-            print("Layanan yang anda pilih tidak tersedia")
+            print("menu yang anda pilih tidak tersedia")
 
-    inmenu = input("Pilih menu> ")
+    inmenu = input("Pilih menu>>>>> ")
 
     os.system("cls")
 
@@ -338,7 +339,7 @@ def menu():
             continue
     elif inmenu == "2":
         while(True):
-            db = driver()
+            db = pengemudi()
             menu_aplikasi()
             continue
     elif inmenu == "3":
@@ -352,7 +353,7 @@ def menu():
             menu_aplikasi()
             continue
     elif inmenu == "0":
-        inmenu = input("apakah anda yakin ingin keluar [y/n]")
+        inmenu = input("apakah anda yakin ingin keluar >> ? [y/n]")
         if inmenu == "y":
             exit()
         else:
